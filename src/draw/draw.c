@@ -1,0 +1,87 @@
+
+
+
+#include "draw.h"
+
+
+void printTree(void* expression, unsigned int indent) {
+    if (!expression) return;
+    for (unsigned int i = 0; i < indent; i++)
+        printf("|   ");
+    switch (*(int*)expression) {
+        case ExpressionTypeBinary:
+            printf("Bi "); printTokenString(((BinaryExpression*)expression)->op); printf("\n");
+            printTree(((BinaryExpression*)expression)->left, indent + 1);
+            printTree(((BinaryExpression*)expression)->right, indent + 1); break;
+        case ExpressionTypeUnary:
+            printf("Un "); printTokenString(((UnaryExpression*)expression)->op); printf("\n");
+            printTree(((UnaryExpression*)expression)->left, indent + 1); break;
+        case ExpressionTypeConstant:
+            printf("Cs %c\n", ((VariableExpression*)expression)->ch); break;
+        case ExpressionTypeDependent:
+            printf("Dp %c\n", ((VariableExpression*)expression)->ch); break;
+        case ExpressionTypeNumber:
+            printf("Nm %d\n", ((NumberExpression*)expression)->num); break;
+    }
+}
+
+
+void printExpression(void* expression) {
+    if (!expression) return;
+    switch (*(int*)expression) {
+        case ExpressionTypeBinary:
+            if (((BinaryExpression*)expression)->op == TokenTypeExponent
+                    && *(int*)((BinaryExpression*)expression)->left == ExpressionTypeUnary) {
+                printf("("); printExpression(((BinaryExpression*)expression)->left); printf(")");
+            }
+            else if (*(int*)((BinaryExpression*)expression)->left == ExpressionTypeBinary
+                    && getPrecedence(((BinaryExpression*)((BinaryExpression*)expression)->left)->op) < getPrecedence(((BinaryExpression*)expression)->op)) {
+                printf("("); printExpression(((BinaryExpression*)expression)->left); printf(")");
+            }
+            else printExpression(((BinaryExpression*)expression)->left);
+            printTokenString(((BinaryExpression*)expression)->op);
+            if (*(int*)((BinaryExpression*)expression)->right == ExpressionTypeBinary
+                    && getPrecedence(((BinaryExpression*)((BinaryExpression*)expression)->right)->op) < getPrecedence(((BinaryExpression*)expression)->op)) {
+                printf("("); printExpression(((BinaryExpression*)expression)->right); printf(")");
+            }
+            else printExpression(((BinaryExpression*)expression)->right); break;
+        case ExpressionTypeUnary:
+            printTokenString(((UnaryExpression*)expression)->op);
+            if (*(int*)((UnaryExpression*)expression)->left == ExpressionTypeDependent
+                    || *(int*)((UnaryExpression*)expression)->left == ExpressionTypeConstant) {
+                printExpression(((UnaryExpression*)expression)->left); break;
+            }
+            else {
+                printf("("); printExpression(((UnaryExpression*)expression)->left); printf(")"); break;
+            }
+        case ExpressionTypeConstant:
+            printf("%c", ((VariableExpression*)expression)->ch); break;
+        case ExpressionTypeDependent:
+            printf("%c", ((VariableExpression*)expression)->ch); break;
+        case ExpressionTypeNumber:
+            printf("%d", ((NumberExpression*)expression)->num); break;
+    }
+}
+
+
+void printList(void* list) {
+    if (!list) return;
+    for (unsigned int i = 0; i < ((List*)list)->len; i++) {
+        printf("0x%p | ", ((List*)list)->data[i]);
+        switch (*(int*)((List*)list)->data[i]) {
+            case ExpressionTypeBinary: printf("Bi"); break;
+            case ExpressionTypeUnary: printf("Un"); break;
+            case ExpressionTypeConstant: printf("Cs"); break;
+            case ExpressionTypeDependent: printf("Dp"); break;
+            case ExpressionTypeNumber: printf("Nm"); break;
+        }
+        printf(" | ");
+        printExpression(((List*)list)->data[i]);
+        printf("\n");
+    }
+}
+
+
+
+
+
