@@ -23,6 +23,13 @@ void* differentiateLn(List* list, UnaryExpression* expression) {
 }
 
 
+void* differentiateLog(List* list, UnaryExpression* expression) {
+    UnaryExpression* botleft = createUnaryExpression(list, TokenTypeLn, createNumberExpression(list, 10));
+    BinaryExpression* right = createBinaryExpression(list, TokenTypeTimes, botleft, expression->left);
+    return createBinaryExpression(list, TokenTypeSlash, differentiate(list, expression->left), right);
+}
+
+
 void* differentiateSin(List* list, UnaryExpression* expression) {
     UnaryExpression* right = createUnaryExpression(list, TokenTypeCos, expression->left);
     return createBinaryExpression(list, TokenTypeTimes, differentiate(list, expression->left), right);
@@ -109,6 +116,52 @@ void* differentiateArcsec(List* list, UnaryExpression* expression) {
 void* differentiateArccsc(List* list, UnaryExpression* expression) {
     return createUnaryExpression(list, TokenTypeMinus, differentiateArcsec(list, expression));
 }
+
+
+void* differentiateSinh(List* list, UnaryExpression* expression) {
+    UnaryExpression* right = createUnaryExpression(list, TokenTypeCosh, expression->left);
+    return createBinaryExpression(list, TokenTypeTimes, differentiate(list, expression->left), right);
+}
+
+
+void* differentiateCosh(List* list, UnaryExpression* expression) {
+    UnaryExpression* right = createUnaryExpression(list, TokenTypeSinh, expression->left);
+    return createBinaryExpression(list, TokenTypeTimes, differentiate(list, expression->left), right);
+}
+
+
+void* differentiateTanh(List* list, UnaryExpression* expression) {
+    UnaryExpression* rightin = createUnaryExpression(list, TokenTypeSech, expression->left);
+    BinaryExpression* right = createBinaryExpression(list, TokenTypeExponent, rightin, createNumberExpression(list, 2));
+    return createBinaryExpression(list, TokenTypeTimes, differentiate(list, expression->left), right);
+}
+
+
+void* differentiateCoth(List* list, UnaryExpression* expression) {
+    UnaryExpression* rightin = createUnaryExpression(list, TokenTypeCsch, expression->left);
+    BinaryExpression* right = createBinaryExpression(list, TokenTypeExponent, rightin, createNumberExpression(list, 2));
+    BinaryExpression * in = createBinaryExpression(list, TokenTypeTimes, differentiate(list, expression->left), right);
+    return createUnaryExpression(list, TokenTypeMinus, in);
+}
+
+
+void* differentiateSech(List* list, UnaryExpression* expression) {
+    UnaryExpression* rightleft = createUnaryExpression(list, TokenTypeSech, expression->left);
+    UnaryExpression* rightright = createUnaryExpression(list, TokenTypeTanh, expression->left);
+    BinaryExpression* right = createBinaryExpression(list, TokenTypeTimes, rightleft, rightright);
+    BinaryExpression* in = createBinaryExpression(list, TokenTypeTimes, differentiate(list, expression->left), right);
+    return createUnaryExpression(list, TokenTypeMinus, in);
+}
+
+
+void* differentiateCsch(List* list, UnaryExpression* expression) {
+    UnaryExpression* rightleft = createUnaryExpression(list, TokenTypeCsch, expression->left);
+    UnaryExpression* rightright = createUnaryExpression(list, TokenTypeCoth, expression->left);
+    BinaryExpression* right = createBinaryExpression(list, TokenTypeTimes, rightleft, rightright);
+    BinaryExpression* in = createBinaryExpression(list, TokenTypeTimes, differentiate(list, expression->left), right);
+    return createUnaryExpression(list, TokenTypeMinus, in);
+}
+
 
 
 

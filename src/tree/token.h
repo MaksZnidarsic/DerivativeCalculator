@@ -14,9 +14,13 @@ enum TokenType {
     TokenTypeLParen, TokenTypeRParen,
 
     TokenTypeFunction,
-    TokenTypeAbs, TokenTypeSqrt, TokenTypeLn,
-    TokenTypeSin, TokenTypeCos, TokenTypeTan, TokenTypeCot, TokenTypeCsc, TokenTypeSec,
+    TokenTypeAbs, TokenTypeSqrt,
+    TokenTypeLn, TokenTypeLog,
+
+    TokenTypeSin, TokenTypeCos, TokenTypeTan, TokenTypeCot, TokenTypeSec, TokenTypeCsc,
     TokenTypeArcsin, TokenTypeArccos, TokenTypeArctan, TokenTypeArccot, TokenTypeArcsec, TokenTypeArccsc,
+
+    TokenTypeSinh, TokenTypeCosh, TokenTypeTanh, TokenTypeCoth, TokenTypeCsch, TokenTypeSech,
 };
 
 
@@ -42,9 +46,6 @@ void* cleanInput(Input* input);
 
 Token* createToken(enum TokenType type, char constant, double num);
 void* cleanToken(Token* token);
-
-void printTokenString(enum TokenType token);
-void printToken(Token* token);
 
 
 

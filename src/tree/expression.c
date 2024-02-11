@@ -134,7 +134,7 @@ void* parseArgument(List* list, Parser* parser, Input* input) {
         case TokenTypeNumber: return parseNumberExpression(list, parser, input);
         case TokenTypeMinus: return parseUnaryExpression(list, parser, input);
     }
-    if (parser->curr->type > TokenTypeFunction)
+    if (parser->curr->type >= TokenTypeFunction)
         return parseUnaryExpression(list, parser, input);
     parser->error++;
     return NULL;
@@ -191,7 +191,7 @@ void* parseExpression(List* list, Parser* parser, Input* input, enum OperatorPre
         case TokenTypeLParen: left = parseGroupedExpression(list, parser, input); break;
         case TokenTypeMinus: left = parseUnaryExpression(list, parser, input); break;
     }
-    if (token > TokenTypeFunction)
+    if (token >= TokenTypeFunction)
         left = parseUnaryExpression(list, parser, input);
     if (parserCheckNull(parser, left))
         return NULL;
@@ -208,6 +208,7 @@ void* parseExpression(List* list, Parser* parser, Input* input, enum OperatorPre
     }
     return left;
 }
+
 
 
 

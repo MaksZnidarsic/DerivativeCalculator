@@ -5,7 +5,7 @@
 
 
 int main() {
-    diff("e^x", 'x');
+    diff("xlnx", 'x');
 }
 
 

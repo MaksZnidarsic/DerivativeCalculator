@@ -257,6 +257,7 @@ unsigned int checkOddExpression(enum TokenType token) {
     switch ((int)token) {
         case TokenTypeSin: case TokenTypeTan: case TokenTypeCot: case TokenTypeCsc:
         case TokenTypeArcsin: case TokenTypeArctan:
+        case TokenTypeSinh: case TokenTypeTanh: case TokenTypeCoth: case TokenTypeCsch:
             return 1;
     }
     return 0;
@@ -267,6 +268,7 @@ unsigned int checkEvenExpression(enum TokenType token) {
     switch ((int)token) {
         case TokenTypeAbs:
         case TokenTypeCos: case TokenTypeSec:
+        case TokenTypeCosh: case TokenTypeSech:
             return 1;
     }
     return 0;

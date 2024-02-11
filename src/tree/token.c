@@ -35,7 +35,7 @@ unsigned int isDigit(char ch) {
 }
 
 
-Token* inputReadNumber(Input* input) {
+Token* readNumber(Input* input) {
     unsigned int pos = input->pos;
     while (isDigit(input->input[input->pos]))
         inputRead(input);
@@ -49,12 +49,111 @@ Token* inputReadNumber(Input* input) {
 }
 
 
+Token* readKeyword(Input* input, char a) {
+    //implement trie
+    switch (a) {
+        case 'a':
+            if (strstr(input->input + input->pos, "abs") == input->input + input->pos) {
+                input->pos += 2;
+                return createToken(TokenTypeAbs, 0, 0);
+            }
+            if (strstr(input->input + input->pos, "arcsin") == input->input + input->pos) {
+                input->pos += 5;
+                return createToken(TokenTypeArcsin, 0, 0);
+            }
+            if (strstr(input->input + input->pos, "arccos") == input->input + input->pos) {
+                input->pos += 5;
+                return createToken(TokenTypeArccos, 0, 0);
+            }
+            if (strstr(input->input + input->pos, "arctan") == input->input + input->pos) {
+                input->pos += 5;
+                return createToken(TokenTypeArctan, 0, 0);
+            }
+            if (strstr(input->input + input->pos, "arccot") == input->input + input->pos) {
+                input->pos += 5;
+                return createToken(TokenTypeArccot, 0, 0);
+            }
+            if (strstr(input->input + input->pos, "arcsec") == input->input + input->pos) {
+                input->pos += 5;
+                return createToken(TokenTypeArcsec, 0, 0);
+            }
+            if (strstr(input->input + input->pos, "arccsc") == input->input + input->pos) {
+                input->pos += 5;
+                return createToken(TokenTypeArccsc, 0, 0);
+            }
+        case 'c':
+            if (strstr(input->input + input->pos, "cosh") == input->input + input->pos) {
+                input->pos += 3;
+                return createToken(TokenTypeCosh, 0, 0);
+            }
+            if (strstr(input->input + input->pos, "cos") == input->input + input->pos) {
+                input->pos += 2;
+                return createToken(TokenTypeCos, 0, 0);
+            }
+            if (strstr(input->input + input->pos, "coth") == input->input + input->pos) {
+                input->pos += 3;
+                return createToken(TokenTypeCoth, 0, 0);
+            }
+            if (strstr(input->input + input->pos, "cot") == input->input + input->pos) {
+                input->pos += 2;
+                return createToken(TokenTypeCot, 0, 0);
+            }
+            if (strstr(input->input + input->pos, "csch") == input->input + input->pos) {
+                input->pos += 3;
+                return createToken(TokenTypeCsch, 0, 0);
+            }
+            if (strstr(input->input + input->pos, "csc") == input->input + input->pos) {
+                input->pos += 2;
+                return createToken(TokenTypeCsc, 0, 0);
+            }
+        case 'l':
+            if (strstr(input->input + input->pos, "ln") == input->input + input->pos) {
+                input->pos++;
+                return createToken(TokenTypeLn, 0, 0);
+            }
+            if (strstr(input->input + input->pos, "log") == input->input + input->pos) {
+                input->pos += 2;
+                return createToken(TokenTypeLog, 0, 0);
+            }
+        case 's':
+            if (strstr(input->input + input->pos, "sech") == input->input + input->pos) {
+                input->pos += 3;
+                return createToken(TokenTypeSec, 0, 0);
+            }
+            if (strstr(input->input + input->pos, "sec") == input->input + input->pos) {
+                input->pos += 2;
+                return createToken(TokenTypeSec, 0, 0);
+            }
+            if (strstr(input->input + input->pos, "sinh") == input->input + input->pos) {
+                input->pos += 3;
+                return createToken(TokenTypeSinh, 0, 0);
+            }
+            if (strstr(input->input + input->pos, "sin") == input->input + input->pos) {
+                input->pos += 2;
+                return createToken(TokenTypeSin, 0, 0);
+            }
+            if (strstr(input->input + input->pos, "sqrt") == input->input + input->pos) {
+                input->pos += 3;
+                return createToken(TokenTypeSqrt, 0, 0);
+            }
+        case 't':
+            if (strstr(input->input + input->pos, "tanh") == input->input + input->pos) {
+                input->pos += 3;
+                return createToken(TokenTypeTanh, 0, 0);
+            }
+            if (strstr(input->input + input->pos, "tan") == input->input + input->pos) {
+                input->pos += 2;
+                return createToken(TokenTypeTan, 0, 0);
+            } 
+        }
+    return NULL;
+}
+
+
 Token* inputNext(Input* input) {
     Token* token = NULL;
-    if (input->pos >= input->len) {
-        token = createToken(TokenTypeEndOfInput, 0, 0);
-        return token;
-    }
+    if (input->pos >= input->len)
+        return createToken(TokenTypeEndOfInput, 0, 0);
     
     inputSkipWhitespace(input);
     switch (input->input[input->pos]) {
@@ -65,75 +164,11 @@ Token* inputNext(Input* input) {
         case '^': token = createToken(TokenTypeExponent, 0, 0); break;
         case '(': token = createToken(TokenTypeLParen, 0, 0); break;
         case ')': token = createToken(TokenTypeRParen, 0, 0); break;
-        case 'a':
-            if (strstr(input->input + input->pos, "abs") == input->input + input->pos) {
-                token = createToken(TokenTypeAbs, 0, 0);
-                input->pos += 2; break;
-            }
-            if (strstr(input->input + input->pos, "arcsin") == input->input + input->pos) {
-                token = createToken(TokenTypeArcsin, 0, 0);
-                input->pos += 5; break;
-            }
-            if (strstr(input->input + input->pos, "arccos") == input->input + input->pos) {
-                token = createToken(TokenTypeArccos, 0, 0);
-                input->pos += 5; break;
-            }
-            if (strstr(input->input + input->pos, "arctan") == input->input + input->pos) {
-                token = createToken(TokenTypeArctan, 0, 0);
-                input->pos += 5; break;
-            }
-            if (strstr(input->input + input->pos, "arccot") == input->input + input->pos) {
-                token = createToken(TokenTypeArccot, 0, 0);
-                input->pos += 5; break;
-            }
-            if (strstr(input->input + input->pos, "arcsec") == input->input + input->pos) {
-                token = createToken(TokenTypeArcsec, 0, 0);
-                input->pos += 5; break;
-            }
-            if (strstr(input->input + input->pos, "arccsc") == input->input + input->pos) {
-                token = createToken(TokenTypeArccsc, 0, 0);
-                input->pos += 5; break;
-            }
-        case 'c':
-            if (strstr(input->input + input->pos, "cos") == input->input + input->pos) {
-                token = createToken(TokenTypeCos, 0, 0);
-                input->pos += 2; break;
-            }
-            if (strstr(input->input + input->pos, "cot") == input->input + input->pos) {
-                token = createToken(TokenTypeCot, 0, 0);
-                input->pos += 2; break;
-            }
-            if (strstr(input->input + input->pos, "csc") == input->input + input->pos) {
-                token = createToken(TokenTypeCsc, 0, 0);
-                input->pos += 2; break;
-            }
-        case 'l':
-            if (strstr(input->input + input->pos, "ln") == input->input + input->pos) {
-                token = createToken(TokenTypeLn, 0, 0);
-                input->pos++; break;
-            }
-        case 's':
-            if (strstr(input->input + input->pos, "sec") == input->input + input->pos) {
-                token = createToken(TokenTypeSec, 0, 0);
-                input->pos += 2; break;
-            }
-            if (strstr(input->input + input->pos, "sin") == input->input + input->pos) {
-                token = createToken(TokenTypeSin, 0, 0);
-                input->pos += 2; break;
-            }
-            if (strstr(input->input + input->pos, "sqrt") == input->input + input->pos) {
-                token = createToken(TokenTypeSqrt, 0, 0);
-                input->pos += 3; break;
-            }
-        case 't':
-            if (strstr(input->input + input->pos, "tan") == input->input + input->pos) {
-                token = createToken(TokenTypeTan, 0, 0);
-                input->pos += 2;break;
-            }
+        default: token = readKeyword(input, input->input[input->pos]);
     }
     if (!token) {
         if (isDigit(input->input[input->pos]))
-            return inputReadNumber(input);
+            return readNumber(input);
         if (input->input[input->pos] == input->var)
             token = createToken(TokenTypeDependent, 0, 0);
         else
@@ -170,49 +205,7 @@ void* cleanToken(Token* token) {
 }
 
 
-void printTokenString(enum TokenType token) {
-    switch (token) {
-        case TokenTypeUnknown: printf("Unknown"); return;
-        case TokenTypeEndOfInput: printf("EndOfInput"); return;
-        case TokenTypeDependent: printf("Variable"); return;
-        case TokenTypeConstant: printf("Constant"); return;
-        case TokenTypeNumber: printf("Number"); return;
-        case TokenTypePlus: printf("+"); return;
-        case TokenTypeMinus: printf("-"); return;
-        case TokenTypeTimes: printf("*"); return;
-        case TokenTypeSlash: printf("/"); return;
-        case TokenTypeExponent: printf("^"); return;
-        case TokenTypeLParen: printf("("); return;
-        case TokenTypeRParen: printf(")"); return;
-        case TokenTypeFunction: return;
-        case TokenTypeAbs: printf("abs"); return;
-        case TokenTypeSqrt: printf("sqrt"); return;
-        case TokenTypeLn: printf("ln"); return;
-        case TokenTypeSin: printf("sin"); return;
-        case TokenTypeCos: printf("cos"); return;
-        case TokenTypeTan: printf("tan"); return;
-        case TokenTypeCot: printf("cot"); return;
-        case TokenTypeSec: printf("sec"); return;
-        case TokenTypeCsc: printf("csc"); return;
-        case TokenTypeArcsin: printf("arcsin"); return;
-        case TokenTypeArccos: printf("arccos"); return;
-        case TokenTypeArctan: printf("arctan"); return;
-        case TokenTypeArccot: printf("arccot"); return;
-    }
-    return;
-}
 
-
-void printToken(Token* token) {
-    if (!token) return;
-    if (token->type == TokenTypeConstant || token->type == TokenTypeDependent) {
-        printTokenString(token->type); printf("[%c]", token->constant); return;
-    }
-    if (token->type == TokenTypeNumber) {
-        printTokenString(token->type); printf("[%d]", token->num); return;
-    }
-    printTokenString(token->type);
-}
 
 
 

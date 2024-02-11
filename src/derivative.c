@@ -2,6 +2,9 @@
 
 
 #include "derivative.h"
+#include "differentiate/differentiate.h"
+#include "simplify/simplify.h"
+#include "draw/draw.h"
 
 
 void clean(Input* input, Parser* parser, List* list) {
@@ -24,8 +27,8 @@ void diff(const char* input, char variable) {
     }
 
     void* derivative = simplify(L, differentiate(L, expression));
-    printf("f(%c) = ", variable); printExpression(expression);
-    printf(" => d/d%c = ", variable); printExpression(derivative);
+    printf("d/d%c ", variable); printExpression(expression);
+    printf(" = "); printExpression(derivative);
 }
 
 

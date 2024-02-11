@@ -120,6 +120,7 @@ void* termBuildBinaryTree(List* list, Term* term, enum TokenType op) {
         top = createUnaryExpression(list, TokenTypeMinus, top);
     if (!term->bot->len)
         return top;
+
     void* bot = treeListBuildBinaryTree(list, term->bot, op, 0);
     if (op == TokenTypeTimes && *(int*)bot == ExpressionTypeNumber && ((NumberExpression*)bot)->num == 1)
         return top;
@@ -129,6 +130,10 @@ void* termBuildBinaryTree(List* list, Term* term, enum TokenType op) {
     if (op == TokenTypeTimes)
         token = TokenTypeSlash;
     else token = TokenTypeMinus;
+    if (!term->top->len && op == TokenTypePlus)
+        return createUnaryExpression(list, TokenTypeMinus, bot);
+    if (!term->top->len && op == TokenTypeTimes)
+        return createNumberExpression(list, 0);
     return createBinaryExpression(list, token, top, bot);
 }
 

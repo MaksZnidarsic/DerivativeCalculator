@@ -64,6 +64,7 @@ UnaryExpression* differentiateUnaryExpression(List* list, UnaryExpression* expre
         case TokenTypeAbs: return differentiateAbs(list, expression);
         case TokenTypeSqrt: return differentiateSqrt(list, expression);
         case TokenTypeLn: return differentiateLn(list, expression);
+        case TokenTypeLog: return differentiateLog(list, expression);
         case TokenTypeSin: return differentiateSin(list, expression);
         case TokenTypeCos: return differentiateCos(list, expression);
         case TokenTypeTan: return differentiateTan(list, expression);
@@ -76,6 +77,12 @@ UnaryExpression* differentiateUnaryExpression(List* list, UnaryExpression* expre
         case TokenTypeArccot: return differentiateArccot(list, expression);
         case TokenTypeArcsec: return differentiateArcsec(list, expression);
         case TokenTypeArccsc: return differentiateArccsc(list, expression);
+        case TokenTypeSinh: return differentiateSinh(list, expression);
+        case TokenTypeCosh: return differentiateCosh(list, expression);
+        case TokenTypeTanh: return differentiateTanh(list, expression);
+        case TokenTypeCoth: return differentiateCoth(list, expression);
+        case TokenTypeSech: return differentiateSech(list, expression);
+        case TokenTypeCsch: return differentiateCsch(list, expression);
     }
     return NULL;
 }

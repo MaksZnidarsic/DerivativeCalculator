@@ -15,7 +15,7 @@ Parser* createParser(Input* input) {
 }
 
 
-void parserNext(Parser* parser, Input* input) {
+    void parserNext(Parser* parser, Input* input) {
     cleanToken(parser->curr);
     parser->curr = parser->next;
     parser->next = inputNext(input);
