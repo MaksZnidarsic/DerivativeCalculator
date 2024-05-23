@@ -27,10 +27,9 @@ void diff(const char* input, char variable) {
     }
 
     void* derivative = simplify(L, differentiate(L, expression));
-    printf("d/d%c ", variable); printExpression(expression);
-    printf(" = "); printExpression(derivative);
+    printf("d/d%c[ ", variable); printExpression(expression);
+    printf(" ] = "); printExpression(derivative);
 }
-
 
 
 

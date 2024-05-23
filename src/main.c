@@ -5,7 +5,7 @@
 
 
 int main() {
-    diff("xlnx", 'x');
+    diff("sinx", 'x');
 }
 
 

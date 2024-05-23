@@ -15,7 +15,7 @@ Parser* createParser(Input* input) {
 }
 
 
-    void parserNext(Parser* parser, Input* input) {
+void parserNext(Parser* parser, Input* input) {
     cleanToken(parser->curr);
     parser->curr = parser->next;
     parser->next = inputNext(input);
@@ -71,6 +71,7 @@ List* cleanList(List* list) {
                 case ExpressionTypeNumber:
                     free(list->data[i]);
             }
+    free(list->data);
     free(list);
     return NULL;
 }
